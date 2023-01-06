@@ -1,0 +1,61 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <title>Colo Shop Categories</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Colo Shop Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <th:block th:insert="~{common/taglib}"></th:block>
+  <th:block th:insert="~{common/scriptslib}"></th:block>
+</head>
+
+<body>
+  <div class="super_container">
+    <!-- -- header -- -->
+    <th:block th:insert="~{common/header}"></th:block>
+    <!-- -- header -- -->
+    <h1 class="text-center">carts</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Unit Price</th>
+          <th scope="col">Total</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <th:block th:each="prd : ${lstCart}">
+          <tr>
+            <th scope="row">1</th>
+            <td th:text="${prd.getProduct().getProductName()}">.</td>
+            <td>
+              <form th:action="@{/cart/{action}?id={cartId}(action='update', cartId=${prd.getProduct().getProductID()})}" method="post">
+                <!-- <input type="hidden" th:value="${prd.getQuantity()}"> -->
+                <input type="number" name="quantity" min="1" max="5" th:value="${prd.getQuantity()}">
+                <input class="btn btn-primary" type="submit" value="Update">
+              </form>
+            </td>
+            <td th:text="${prd.getProduct().getPrice()}">...</td>
+            <td th:text="${prd.getTotal()}">...</td>
+            <td><a
+                th:href="@{/cart/{action}?id={cartId}(action='delete', cartId=${prd.getProduct().getProductID()})}">Delete</a>
+            </td>
+
+          </tr>
+        </th:block>
+      </tbody>
+    </table>
+    <h3 class="text-right">subTotal($):<u th:text="${lstCart} != null ? ${subtotal} : 0"></u><a th:href="@{/checkout}">CheckOut</a></h3>
+    <!-- Footer -->
+    <th:block th:insert="~{common/footer}"></th:block>
+    <!-- Footer -->
+
+  </div>
+</body>
+
+</html>

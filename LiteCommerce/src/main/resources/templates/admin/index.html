@@ -1,0 +1,63 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>Colo Shop</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Colo Shop">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<th:block th:insert="~{common/taglib}"></th:block>
+	<th:block th:insert="~{common/scriptslib}"></th:block>
+
+</head>
+
+<body>
+
+	<div class="super_container">
+
+		<!-- -- header -- -->
+		<th:block th:insert="~{common/navigation}"></th:block>
+		<!-- -- header -- -->
+	
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+
+		<!-- Footer -->
+		<th:block th:insert="~{common/footer}"></th:block>
+		<!-- Footer -->
+
+	</div>
+
+
+</body>
+
+</html>

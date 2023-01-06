@@ -1,0 +1,61 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Colo Shop</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <th:block th:insert="~{common/taglib}"></th:block>
+    <th:block th:insert="~{common/scriptslib}"></th:block>
+
+</head>
+
+<body>
+
+    <div class="super_container">
+
+        <!-- -- header -- -->
+        <th:block th:insert="~{common/navigation}"></th:block>
+        <!-- -- header -- -->
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">employee_Name</th>
+                    <th scope="col">Birth_date</th>
+                    <th scope="col">Number_Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col" colspan="1">action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="lst : ${listEmployee}">
+                    <tr>
+
+                        <th scope="row">1</th>
+                        <td th:text="${lst.getEmployeeName()}">..</td>
+                        <td th:text="${lst.getBirthDate()}"></td>
+                        <td th:text="${lst.getNumberPhone()}"></td>
+                        <td th:text="${lst.getAddress()}">..</td>
+                        <td>
+                            <a th:href="@{/admin-employee/{action}/{id}(action ='delete', id=${lst.getEmployeeID()})}">Delete</a>
+                            <a th:href="@{/admin-employee/{action}/{id}(action ='update', id=${lst.getEmployeeID()})}">Update</a>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <th:block th:insert="~{common/footer}"></th:block>
+        <!-- Footer -->
+
+    </div>
+
+
+</body>
+
+</html>

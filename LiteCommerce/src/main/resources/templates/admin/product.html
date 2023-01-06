@@ -1,0 +1,68 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Colo Shop</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <th:block th:insert="~{common/taglib}"></th:block>
+    <th:block th:insert="~{common/scriptslib}"></th:block>
+
+</head>
+
+<body>
+
+    <div class="super_container">
+
+        <!-- -- header -- -->
+        <th:block th:insert="~{common/navigation}"></th:block>
+        <!-- -- header -- -->
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Product_name</th>
+                    <th scope="col">image</th>
+                    <th scope="col">price</th>
+                    <th scope="col">price_old</th>
+                    <th scope="col">quantity</th>                   
+                    <th scope="col">discount</th>               
+                    <th scope="col">entry_date</th>
+                    <th scope="col">GPName</th>
+                    <th scope="col" colspan="1">action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="lst : ${listproduct}">
+                    <tr>
+
+                        <th scope="row">1</th>
+                        <td th:text="${lst.getProductName()}">..</td>
+                        <td><img th:src="${lst.getImage()}" style="width: 70px;"></td>
+                        <td th:text="${lst.getPrice()}"></td>
+                        <td th:text="${lst.getPriceOld()}"></td>
+                        <td th:text="${lst.getQuantity()}">..</td>
+                        <td th:text="${lst.getDiscount()}"></td>
+                        <td th:text="${lst.getEntryDate()}">..</td>
+                        <td th:text="${lst.getGroupProduct().getGroupProductName()}"></td>
+                        <td><a th:href="@{/admin-product/{action}/{id}(action ='delete', id=${lst.getProductID()})}">Delete</a>
+                            <a th:href="@{/admin-product/{action}/{id}(action ='update', id=${lst.getProductID()})}">Update</a>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <th:block th:insert="~{common/footer}"></th:block>
+        <!-- Footer -->
+
+    </div>
+
+
+</body>
+
+</html>
