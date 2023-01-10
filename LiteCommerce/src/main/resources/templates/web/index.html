@@ -83,9 +83,14 @@
 											<div class="product_price" th:text="${prd.getPrice()}">...</div>
 										</div>
 									</div>
-									<div class="red_button add_to_cart_button"><a
-											th:href="@{/cart/{action}?id={cartId}(action='add', cartId=${prd.getProductID()})}">add
-											to cart</a></div>
+									<div class="red_button add_to_cart_button">
+										<th:block th:if="${prd.getQuantity} > 0">
+											<a th:href="@{/cart/{action}?id={cartId}(action='add', cartId=${prd.getProductID()})}">add to cart</a>
+										</th:block>
+										<th:block th:unless="${prd.getQuantity} > 0">
+											<a>Out of stock</a>
+										</th:block></div>
+										
 								</div>
 							</th:block>
 						</div>

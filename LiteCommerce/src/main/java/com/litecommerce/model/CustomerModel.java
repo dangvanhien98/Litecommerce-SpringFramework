@@ -11,8 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Table(name = "Customers")
 @Entity(name = "CustomerModel")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,78 +43,5 @@ public class CustomerModel {
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private Collection<OrderModel> orders;
-
-	public CustomerModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public CustomerModel(int customerID, String email, String numberPhone, String passWord, String customerName,
-			String address, Collection<OrderModel> orders) {
-		super();
-		this.customerID = customerID;
-		this.email = email;
-		this.numberPhone = numberPhone;
-		this.passWord = passWord;
-		this.customerName = customerName;
-		this.address = address;
-		this.orders = orders;
-	}
-
-	public int getCustomerID() {
-		return customerID;
-	}
-
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getNumberPhone() {
-		return numberPhone;
-	}
-
-	public void setNumberPhone(String numberPhone) {
-		this.numberPhone = numberPhone;
-	}
-
-	public String getPassWord() {
-		return passWord;
-	}
-
-	public void setPassWord(String passWord) {
-		this.passWord = passWord;
-	}
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Collection<OrderModel> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Collection<OrderModel> orders) {
-		this.orders = orders;
-	}
 	
 }

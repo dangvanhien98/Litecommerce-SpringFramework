@@ -13,8 +13,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Table(name = "GroupProduct")
 @Entity(name = "GroupProductModel")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class GroupProductModel {
 
 	@Id
@@ -31,52 +38,4 @@ public class GroupProductModel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "groupProduct", cascade = CascadeType.ALL) // quan hệ 1-n với đối tượng product
 	private Collection<ProductModel> products;
-
-	public GroupProductModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public GroupProductModel(int groupProductID, String groupProductName, String image,
-			Collection<ProductModel> products) {
-		super();
-		this.groupProductID = groupProductID;
-		this.groupProductName = groupProductName;
-		this.image = image;
-		this.products = products;
-	}
-
-	public int getGroupProductID() {
-		return groupProductID;
-	}
-
-	public void setGroupProductID(int groupProductID) {
-		this.groupProductID = groupProductID;
-	}
-
-	public String getGroupProductName() {
-		return groupProductName;
-	}
-
-	public void setGroupProductName(String groupProductName) {
-		this.groupProductName = groupProductName;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	public Collection<ProductModel> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Collection<ProductModel> products) {
-		this.products = products;
-	}
-	
-	
 }

@@ -1,0 +1,75 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</head>
+
+<div class="col-6 container my-3 card p-3">
+    <h1 class="text-center mb-3">add product</h1>
+    <form th:action="admin-saveProduct" method="post" th:object="${product}">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" th:field="*{productName}" placeholder="Enter Name" required>
+            <label class="input-group-text">ProductName</label>
+        </div>
+        <div class="input-group mb-3">
+            <select class="form-select" aria-label="Default select example" th:field="*{groupProduct}" required>
+                <option th:value="NULL">Select Group Product Name</option>
+                <th:block th:each="prd :${lstGrp}">
+                    <option th:value="${prd.getGroupProductID()}" th:text="${prd.getGroupProductName()}"></option>
+                </th:block>
+            </select>
+            <label class="input-group-text">GroupProductName</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" min="0" class="form-control" th:field="*{quantity}" placeholder="Enter quantity"
+                required>
+            <label class="input-group-text">Quantity</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" min="1" class="form-control" th:field="*{price}" placeholder="Enter price" required>
+            <label class="input-group-text">Price</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" min="1" class="form-control" th:field="*{priceOld}" placeholder="Enter priceOld"
+                required>
+            <label class="input-group-text">PriceOld</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="number" min="0" class="form-control" th:field="*{discount}" placeholder="Enter discount"
+                required>
+            <label class="input-group-text">Discount</label>
+        </div>
+        <div class="input-group mb-3">
+            <select class="form-select"  th:field="*{size}">
+                <option th:value="NULL">Select Color</option>           
+                <option th:value="S" th:text="S"></option>
+                <option th:value="M" th:text="M"></option>
+                <option th:value="L" th:text="L"></option>
+                <option th:value="XL" th:text="XL"></option>
+            </select>
+            <label class="input-group-text">Size</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" th:field="*{color}" placeholder="Enter color" required>
+            <label class="input-group-text">Color</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" th:field="*{image}" placeholder="Enter image">
+            <label class="input-group-text">Image</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="date" class="form-control" th:field="*{entryDate}" placeholder="Enter entryDate" required>
+            <label class="input-group-text">EntryDate</label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" th:field="*{note}" placeholder="Enter note" required>
+            <label class="input-group-text">Note</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+</div>

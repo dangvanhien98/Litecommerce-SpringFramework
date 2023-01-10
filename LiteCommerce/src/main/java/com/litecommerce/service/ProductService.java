@@ -44,4 +44,8 @@ public class ProductService {
 	public void updateQuantity(int quantity, int productid) {
 		prRepository.updateQuantity(quantity, productid);
 	}
+	
+	public ProductModel insert(ProductModel product) {
+		return prRepository.save(product);
+	}
 }
