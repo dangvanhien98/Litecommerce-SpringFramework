@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.litecommerce.model.GroupProductModel;
 import com.litecommerce.model.ProductModel;
 import com.litecommerce.service.GroupProductService;
 import com.litecommerce.service.ProductService;
@@ -23,7 +24,7 @@ public class ProductController {
 	
 	@RequestMapping(value = { "/admin-product", "/admin-product/{action}/{id}"}, method = RequestMethod.GET)
 	public String productPage(Model model,@PathVariable(required = false) String action, @PathVariable(required = false) Integer id) {
-		System.out.println(action + "--" + id);
+		//System.out.println(action + "--" + id);
 		if(action != null && action.equals("delete")) {
 			productService.deleteById(id);
 		}
@@ -31,11 +32,11 @@ public class ProductController {
 		return "admin/product";
 	}
 	
-	@RequestMapping(value = {"/admin-addProduct"}, method = RequestMethod.GET)
-	public String showAddProduct(Model model) {
+	@RequestMapping(value = {"/admin-addProduct", "/admin-updateProduct/{id}"}, method = RequestMethod.GET)
+	public String showAddProduct(Model model, @PathVariable(required = false) Integer id) {
 		model.addAttribute("lstGrp", groupProductService.findAll());
-		model.addAttribute("product", new ProductModel());
-		return "admin/addProduct";
+		model.addAttribute("product", id==null ? new ProductModel() : productService.findById(id));
+		return "admin/actionProduct";
 	}
 	
 	@RequestMapping(value = "/admin-saveProduct", method = RequestMethod.POST)

@@ -1,7 +1,5 @@
 package com.litecommerce.controller.web;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +49,8 @@ public class CartController {
 
 		int temp = 0;
 		temp = product.getQuantity(); // sl 1 sp trong kho
-
+		System.out.println();
+		
 		if (action != null && action.equals("add")) {
 			if (httpSession.getAttribute("cart") == null) {
 				cart = new CartService();
@@ -63,7 +62,7 @@ public class CartController {
 		}
 
 		CartService lstcart = (CartService) httpSession.getAttribute("cart");
-
+		
 		if (quantity != null)
 			temp = product.getQuantity() + lstcart.quantityById(id);
 		else
@@ -77,8 +76,13 @@ public class CartController {
 				return "redirect:/";
 			}
 		} else if (action != null && action.equals("update")) {
-			productService.updateQuantity(temp - Integer.parseInt(quantity), id); // update sl sp trong kho khi update sl sp
-			lstcart.updateCart(id, Integer.valueOf(quantity));
+			if(temp-Integer.parseInt(quantity) < 0) {
+				System.out.println("out of stock");			
+			}
+			else {
+				productService.updateQuantity(temp - Integer.parseInt(quantity), id); // update sl sp trong kho khi update sl sp
+				lstcart.updateCart(id, Integer.valueOf(quantity));
+			}
 		}
 
 //		if (lstcart == null) {

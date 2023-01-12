@@ -27,7 +27,7 @@ public class GroupProductModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "GroupProductID", columnDefinition = "int")
-	private int groupProductID;
+	private Integer groupProductID;
 
 	@Column(name = "GroupProductName", columnDefinition = "nvarchar(50)")
 	private String groupProductName;

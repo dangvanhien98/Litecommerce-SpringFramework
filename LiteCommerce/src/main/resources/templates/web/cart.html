@@ -9,6 +9,11 @@
 
   <th:block th:insert="~{common/taglib}"></th:block>
   <th:block th:insert="~{common/scriptslib}"></th:block>
+  <script>
+    function myFunction() {
+      alert("Hello! I am an alert box!");
+    }
+  </script>
 </head>
 
 <body>
@@ -34,9 +39,11 @@
             <th scope="row">1</th>
             <td th:text="${prd.getProduct().getProductName()}">.</td>
             <td>
-              <form th:action="@{/cart/{action}?id={cartId}(action='update', cartId=${prd.getProduct().getProductID()})}" method="post">
+              <form
+                th:action="@{/cart/{action}?id={cartId}(action='update', cartId=${prd.getProduct().getProductID()})}"
+                method="post">
                 <!-- <input type="hidden" th:value="${prd.getQuantity()}"> -->
-                <input type="number" name="quantity" min="1" max="5" th:value="${prd.getQuantity()}">
+                <input type="number" name="quantity" min="1" th:max="${prd.getProduct().getQuantity()}" th:value="${prd.getQuantity()}">
                 <input class="btn btn-primary" type="submit" value="Update">
               </form>
             </td>
@@ -45,12 +52,13 @@
             <td><a
                 th:href="@{/cart/{action}?id={cartId}(action='delete', cartId=${prd.getProduct().getProductID()})}">Delete</a>
             </td>
-
           </tr>
         </th:block>
       </tbody>
     </table>
-    <h3 class="text-right">subTotal($):<u th:text="${lstCart} != null ? ${subtotal} : 0"></u><a th:href="@{/checkout}">CheckOut</a></h3>
+
+    <h3 class="text-right">subTotal($):<u th:text="${lstCart} != null ? ${subtotal} : 0"></u><a
+        th:href="@{/checkout}">CheckOut</a></h3>
     <!-- Footer -->
     <th:block th:insert="~{common/footer}"></th:block>
     <!-- Footer -->

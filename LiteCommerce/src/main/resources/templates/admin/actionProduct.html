@@ -16,8 +16,8 @@
             <label class="input-group-text">ProductName</label>
         </div>
         <div class="input-group mb-3">
-            <select class="form-select" aria-label="Default select example" th:field="*{groupProduct}" required>
-                <option th:value="NULL">Select Group Product Name</option>
+            <select class="form-select" aria-label="Default select example" th:field="*{groupProduct.groupProductID}" required>
+                <option th:value="Null">Select Group Product Name</option>
                 <th:block th:each="prd :${lstGrp}">
                     <option th:value="${prd.getGroupProductID()}" th:text="${prd.getGroupProductName()}"></option>
                 </th:block>
@@ -45,7 +45,7 @@
         </div>
         <div class="input-group mb-3">
             <select class="form-select"  th:field="*{size}">
-                <option th:value="NULL">Select Color</option>           
+                <option th:value="0">Select Size</option>           
                 <option th:value="S" th:text="S"></option>
                 <option th:value="M" th:text="M"></option>
                 <option th:value="L" th:text="L"></option>
@@ -54,7 +54,14 @@
             <label class="input-group-text">Size</label>
         </div>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" th:field="*{color}" placeholder="Enter color" required>
+            <select class="form-select"  th:field="*{color}">
+                <option th:value= "0">Select Color</option>           
+                <option th:value="Red" th:text="Red"></option>
+                <option th:value="Green" th:text="Green"></option>
+                <option th:value="Yellow" th:text="Yellow"></option>
+                <option th:value="Black" th:text="Black"></option>
+                <option th:value="White" th:text="White"></option>
+            </select>
             <label class="input-group-text">Color</label>
         </div>
         <div class="input-group mb-3">
@@ -66,7 +73,7 @@
             <label class="input-group-text">EntryDate</label>
         </div>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" th:field="*{note}" placeholder="Enter note" required>
+            <input type="text" class="form-control" th:field="*{note}" placeholder="Enter note">
             <label class="input-group-text">Note</label>
         </div>
 

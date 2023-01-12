@@ -15,10 +15,10 @@ public interface ProductRepository extends CrudRepository<ProductModel, Integer>
 	
 	ProductModel findById(int id);
 	
-	@Query(value = "select top(5) * from products order by entry_date desc", nativeQuery = true)
+	@Query(value = "select top(5) * from products where quantity > 0 order by entry_date desc", nativeQuery = true)
 	List<ProductModel> getNewArrivalsProduct();
 	
-	@Query(value = "select top(5) * from products prd where prd.group_productid = ?1 order by prd.entry_date desc", nativeQuery = true)
+	@Query(value = "select top(5) * from products prd where prd.quantity > 0 and prd.group_productid = ?1 order by prd.entry_date desc", nativeQuery = true)
 	List<ProductModel> getNewArrivalsProductByGroupId(Integer group_productid);
 	
 	@Query(value = "select * from products prd where prd.group_productid = ?1 order by prd.entry_date desc", nativeQuery = true)
