@@ -33,4 +33,9 @@ public interface ProductRepository extends CrudRepository<ProductModel, Integer>
 	@Modifying
 	@Query(value = "Update products set quantity = ?1 where productid = ?2", nativeQuery = true)
 	void updateQuantity(int quantity, int productid);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "select * from products prd where prd.product_name LIKE %?1%", nativeQuery = true)
+	List<ProductModel> getProductsByName(String product_name);
 }

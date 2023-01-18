@@ -6,20 +6,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Colo Shop">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <th:block th:insert="~{common/taglib}"></th:block>
     <th:block th:insert="~{common/scriptslib}"></th:block>
 
 </head>
 
 <body>
-
     <div class="super_container">
 
         <!-- -- header -- -->
         <th:block th:insert="~{common/navigation}"></th:block>
         <!-- -- header -- -->
-        <a class="btn btn-primary float-right" th:href="@{/admin-addProduct}" >add to product</a>
+        <div>
+            <a class="btn btn-primary float-left" th:href="@{/admin-addProduct}">add to product</a>
+            <div class="float-right">
+                <form th:action="@{/admin-searchproduct}" method="post">
+                <div class="input-group">
+                    <!-- <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span id="search_concept">Filter by</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#contains">Name</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="search_param" value="all" id="search_param"> -->
+                    <input type="text" class="form-control" name="keyName" placeholder="Search term...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg></button>
+                    </span>
+                </div>
+                </form>
+            </div>
+        </div>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -28,8 +55,8 @@
                     <th scope="col">image</th>
                     <th scope="col">price</th>
                     <th scope="col">price_old</th>
-                    <th scope="col">quantity</th>                   
-                    <th scope="col">discount</th>               
+                    <th scope="col">quantity</th>
+                    <th scope="col">discount</th>
                     <th scope="col">entry_date</th>
                     <th scope="col">GPName</th>
                     <th scope="col" colspan="1">action</th>
@@ -48,7 +75,8 @@
                         <td th:text="${lst.getDiscount()}"></td>
                         <td th:text="${lst.getEntryDate()}">..</td>
                         <td th:text="${lst.getGroupProduct().getGroupProductName()}"></td>
-                        <td><a th:href="@{/admin-product/{action}/{id}(action ='delete', id=${lst.getProductID()})}">Delete</a>
+                        <td><a
+                                th:href="@{/admin-product/{action}/{id}(action ='delete', id=${lst.getProductID()})}">Delete</a>
                             <a th:href="@{/admin-updateProduct/{id}(id=${lst.getProductID()})}">Update</a>
                         </td>
                     </tr>

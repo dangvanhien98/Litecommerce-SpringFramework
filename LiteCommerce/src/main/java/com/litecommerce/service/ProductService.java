@@ -48,4 +48,8 @@ public class ProductService {
 	public ProductModel insert(ProductModel product) {
 		return prRepository.save(product);
 	}
+	
+	public List<ProductModel> getProductsByName(String name){
+		return prRepository.getProductsByName(name);
+	}
 }

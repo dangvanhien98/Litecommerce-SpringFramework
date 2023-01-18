@@ -10,9 +10,10 @@
 
 <div class="col-6 container my-3 card p-3">
     <h1 class="text-center mb-3">add product</h1>
-    <form th:action="admin-saveProduct" method="post" th:object="${product}">
+    <form th:action="@{/admin-saveProduct}" method="post" th:object="${product}" enctype="multipart/form-data">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" th:field="*{productName}" placeholder="Enter Name" required>
+            <input type="hidden" th:field="*{productID}">
+            <input type="text" class="form-control" th:field="*{productName}" placeholder="Enter Name" required>         
             <label class="input-group-text">ProductName</label>
         </div>
         <div class="input-group mb-3">
@@ -65,7 +66,7 @@
             <label class="input-group-text">Color</label>
         </div>
         <div class="input-group mb-3">
-            <input type="file" class="form-control" th:field="*{image}" placeholder="Enter image">
+            <input type="file" class="form-control" placeholder="Enter image" accept="image/*" name="fileImage" required>
             <label class="input-group-text">Image</label>
         </div>
         <div class="input-group mb-3">
