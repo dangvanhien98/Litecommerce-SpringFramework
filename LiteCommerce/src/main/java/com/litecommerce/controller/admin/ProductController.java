@@ -41,9 +41,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/admin-searchproduct" , method = RequestMethod.POST)
 	public String PageSearch(Model model, @RequestParam(required = false) String keyName) {
-		System.out.println(productService.getProductsByName(keyName));
 		model.addAttribute("listproduct", productService.getProductsByName(keyName));
-		
 		return "admin/product";
 	}
 	

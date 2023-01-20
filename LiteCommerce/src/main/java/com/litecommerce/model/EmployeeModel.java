@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class EmployeeModel {
 	@Column(name = "BirthDate", columnDefinition = "date")
 	private Date birthDate;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private Collection<OrderModel> orders;	
 }

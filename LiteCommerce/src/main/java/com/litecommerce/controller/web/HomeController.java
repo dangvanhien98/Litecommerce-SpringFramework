@@ -1,22 +1,22 @@
 package com.litecommerce.controller.web;
 
-import java.util.List;
-
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.litecommerce.model.CartModel;
 import com.litecommerce.model.CustomerModel;
-import com.litecommerce.model.ProductModel;
 import com.litecommerce.service.CartService;
 import com.litecommerce.service.CustomerService;
 import com.litecommerce.service.GroupProductService;
@@ -54,8 +54,15 @@ public class HomeController {
 
 	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
 	public String loginSuccess(@RequestParam(required = false) String numberPhone,
-			@RequestParam(required = false) String password, HttpSession httpSession, Model model) {
+			@RequestParam(required = false) String password, HttpSession httpSession, Model model,
+			@CookieValue(value = "user", defaultValue = "") String userCookie,
+			HttpServletResponse response, HttpServletRequest request) {
 		if (customerService.findByPhoneAndPass(numberPhone, password) != null) {
+			userCookie = customerService.findByPhoneAndPass(numberPhone, password).getEmail();
+			Cookie cookie = new Cookie("user", userCookie);
+			cookie.setMaxAge(24*60*60);
+			
+			response.addCookie(cookie);
 			if (httpSession.getAttribute("customterLogin") == null) {
 				httpSession.setAttribute("customterLogin", customerService.findByPhoneAndPass(numberPhone, password));
 			}
@@ -84,9 +91,10 @@ public class HomeController {
 		return "redirect:/loginn";
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/findAll", method = RequestMethod.GET)
-	public ResponseEntity<List<ProductModel>> findAll() {
-		return new ResponseEntity<List<ProductModel>>(productService.findAll(), HttpStatus.OK);
+	public Object findAll() {
+		return productService.findAll();
 		// return "web/index";
 	}
 
@@ -97,7 +105,14 @@ public class HomeController {
 //		//return "web/index";
 //	}
 	@RequestMapping(value = { "/", "/arrivals/{id}" }, method = RequestMethod.GET)
-	public String homePage(Model model, @PathVariable(required = false) Integer id, HttpSession httpSession) {
+	public String homePage(Model model, @PathVariable(required = false) Integer id, HttpSession httpSession,
+			HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		System.out.println(cookies);
+		for(Cookie c : cookies) {
+			if(c.getName().equals("user"))
+				System.out.println("value cook"+c.getValue());
+		}
 		if (httpSession.getAttribute("customterLogin") == null)
 			return "redirect:/logoutt";
 		model.addAttribute("grproduct", grProductService.findAll().subList(1, grProductService.findAll().size()));

@@ -16,14 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Table(name = "GroupProduct")
 @Entity(name = "GroupProductModel")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GroupProductModel {
+public class GroupProductModel{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,8 +34,7 @@ public class GroupProductModel {
 
 	@Column(name = "Image", columnDefinition = "nvarchar(50)")
 	private String image;
-	
-	@ToString.Exclude
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "groupProduct", cascade = CascadeType.ALL) // quan hệ 1-n với đối tượng product
 	private Collection<ProductModel> products;

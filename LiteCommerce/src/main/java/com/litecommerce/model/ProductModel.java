@@ -16,12 +16,9 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 
 @Table(name = "Products")
@@ -29,11 +26,12 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductModel {
+public class ProductModel{
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ProductID", columnDefinition = "int")
-	private int productID;
+	private Integer productID;
 
 	@Column(name = "ProductName", columnDefinition = "nvarchar(50)")
 	private String productName;
@@ -66,139 +64,11 @@ public class ProductModel {
 	@Column(name = "Note", columnDefinition = "nvarchar(50)")
 	private String note;
 	
-	@JsonIgnore
 	@ManyToOne // có nhiều sản phẩm ở nhóm sản phẩm...n-1
 	@JoinColumn(name = "GroupProductID") // thông qua khóa ngoại GroupProductID
 	private GroupProductModel groupProduct;
 	
-	@ToString.Exclude
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<OrderDetailModel> orderDetails;
-
-
-//	public ProductModel(int productID, String productName, int quantity, float price, float priceOld, float discount,
-//			String size, String color, String image, Date entryDate, String note, GroupProductModel groupProduct,
-//			Collection<OrderDetailModel> orderDetails) {
-//		super();
-//		this.productID = productID;
-//		this.productName = productName;
-//		this.quantity = quantity;
-//		this.price = price;
-//		this.priceOld = priceOld;
-//		this.discount = discount;
-//		this.size = size;
-//		this.color = color;
-//		this.image = image;
-//		this.entryDate = entryDate;
-//		this.note = note;
-//		this.groupProduct = groupProduct;
-//		this.orderDetails = orderDetails;
-//	}
-//
-//	public int getProductID() {
-//		return productID;
-//	}
-//
-//	public void setProductID(int productID) {
-//		this.productID = productID;
-//	}
-//
-//	public String getProductName() {
-//		return productName;
-//	}
-//
-//	public void setProductName(String productName) {
-//		this.productName = productName;
-//	}
-//
-//	public int getQuantity() {
-//		return quantity;
-//	}
-//
-//	public void setQuantity(int quantity) {
-//		this.quantity = quantity;
-//	}
-//
-//	public float getPrice() {
-//		return price;
-//	}
-//
-//	public void setPrice(float price) {
-//		this.price = price;
-//	}
-//
-//	public float getPriceOld() {
-//		return priceOld;
-//	}
-//
-//	public void setPriceOld(float priceOld) {
-//		this.priceOld = priceOld;
-//	}
-//
-//	public float getDiscount() {
-//		return discount;
-//	}
-//
-//	public void setDiscount(float discount) {
-//		this.discount = discount;
-//	}
-//
-//	public String getSize() {
-//		return size;
-//	}
-//
-//	public void setSize(String size) {
-//		this.size = size;
-//	}
-//
-//	public String getColor() {
-//		return color;
-//	}
-//
-//	public void setColor(String color) {
-//		this.color = color;
-//	}
-//
-//	public String getImage() {
-//		return image;
-//	}
-//
-//	public void setImage(String image) {
-//		this.image = image;
-//	}
-//
-//	public Date getEntryDate() {
-//		return entryDate;
-//	}
-//
-//	public void setEntryDate(Date entryDate) {
-//		this.entryDate = entryDate;
-//	}
-//
-//	public String getNote() {
-//		return note;
-//	}
-//
-//	public void setNote(String note) {
-//		this.note = note;
-//	}
-//
-//	public GroupProductModel getGroupProduct() {
-//		return groupProduct;
-//	}
-//
-//	public void setGroupProduct(GroupProductModel groupProduct) {
-//		this.groupProduct = groupProduct;
-//	}
-//
-//	public Collection<OrderDetailModel> getOrderDetails() {
-//		return orderDetails;
-//	}
-//
-//	public void setOrderDetails(Collection<OrderDetailModel> orderDetails) {
-//		this.orderDetails = orderDetails;
-//	}
-
-	
 }

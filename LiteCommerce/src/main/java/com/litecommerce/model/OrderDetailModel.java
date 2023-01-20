@@ -11,7 +11,8 @@ import javax.persistence.Table;
 
 @Table(name = "OrderDetail")
 @Entity(name = "OrderDetailModel")
-public class OrderDetailModel {
+public class OrderDetailModel{
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "OrderDetailID", columnDefinition = "int")
