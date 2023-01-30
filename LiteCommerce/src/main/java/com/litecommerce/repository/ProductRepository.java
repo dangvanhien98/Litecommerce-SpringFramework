@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -36,4 +38,7 @@ public interface ProductRepository extends CrudRepository<ProductModel, Integer>
 
 	@Query(value = "select * from products prd where prd.product_name LIKE %?1%", nativeQuery = true)
 	List<ProductModel> getProductsByName(String product_name);
+	
+	@Query(value = "select p from ProductModel p")
+	Page<ProductModel> findAllPage(Pageable pageable);
 }

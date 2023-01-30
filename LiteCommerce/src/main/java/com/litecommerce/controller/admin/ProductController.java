@@ -4,8 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,12 +37,36 @@ public class ProductController {
 	GroupProductService groupProductService;
 	
 	@RequestMapping(value = { "/admin-product", "/admin-product/{action}/{id}"}, method = RequestMethod.GET)
-	public String productPage(Model model,@PathVariable(required = false) String action, @PathVariable(required = false) Integer id) {
+	public String productPage(Model model,@PathVariable(required = false) String action, @PathVariable(required = false) Integer id,
+			@RequestParam(name = "page", defaultValue = "1") Integer currentPage,
+			@RequestParam(name = "size", defaultValue = "5") Integer pageSize,
+			@RequestParam(name = "sortField", defaultValue = "") String sortField,
+			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir) 
+	{
 		if(action != null && action.equals("delete")) {
 			productService.deleteById(id);
 		}
 		
-		model.addAttribute("listproduct", productService.getAllProduct());
+		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sortDir", sortDir);
+		
+		Pageable pageable = sortField.length() == 0 
+				? PageRequest.of(currentPage - 1, pageSize)
+				: PageRequest.of(currentPage - 1, pageSize, sortDir.equals("asc") ? Sort.by(sortField).ascending() :  Sort.by(sortField).descending());
+		
+		Page<ProductModel> productPage = productService.findPaginated(pageable);
+		model.addAttribute("listproduct", productPage);
+		
+		int totalPages = productPage.getTotalPages();
+		if(totalPages > 0 ) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
+		
+	//	model.addAttribute("listproduct", productService.getAllProduct());
 		return "admin/product";
 	}
 	

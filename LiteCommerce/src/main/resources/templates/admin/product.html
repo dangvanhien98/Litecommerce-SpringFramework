@@ -25,8 +25,8 @@
             <a class="btn btn-primary float-left" th:href="@{/admin-addProduct}">add to product</a>
             <div class="float-right">
                 <form th:action="@{/admin-searchproduct}" method="post">
-                <div class="input-group">
-                    <!-- <div class="input-group-btn search-panel">
+                    <div class="input-group">
+                        <!-- <div class="input-group-btn search-panel">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <span id="search_concept">Filter by</span> <span class="caret"></span>
                         </button>
@@ -35,15 +35,15 @@
                         </ul>
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param"> -->
-                    <input type="text" class="form-control" name="keyName" placeholder="Search term...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                            </svg></button>
-                    </span>
-                </div>
+                        <input type="text" class="form-control" name="keyName" placeholder="Search term...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg></button>
+                        </span>
+                    </div>
                 </form>
             </div>
         </div>
@@ -51,13 +51,13 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">Product_name</th>
+                    <th scope="col"><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'productName' , sortDir=${reverseSortDir})}" >Product_Name</a></th>
                     <th scope="col">image</th>
-                    <th scope="col">price</th>
+                    <th scope="col" ><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'price' , sortDir=${reverseSortDir})}" >Price</a></th>
                     <th scope="col">price_old</th>
                     <th scope="col">quantity</th>
                     <th scope="col">discount</th>
-                    <th scope="col">entry_date</th>
+                    <th scope="col"><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'entryDate' , sortDir=${reverseSortDir})}" >entryDate</a></th>
                     <th scope="col">GPName</th>
                     <th scope="col" colspan="1">action</th>
                 </tr>
@@ -66,7 +66,7 @@
                 <th:block th:each="lst : ${listproduct}">
                     <tr>
 
-                        <th scope="row">1</th>
+                        <th scope="row"></th>
                         <td th:text="${lst.getProductName()}">..</td>
                         <td><img th:src="${lst.getImage()}" style="width: 70px;"></td>
                         <td th:text="${lst.getPrice()}"></td>
@@ -83,6 +83,13 @@
                 </th:block>
             </tbody>
         </table>
+        <div th:if="${listproduct.totalPages > 0}" class="pagination d-flex justify-content-center">
+            <th:block th:each="pageNumber : ${pageNumbers}">
+                <span style="width: 30px; border: gray solid 1px;; text-align: center;"> <a th:href="@{/admin-product(size= ${listproduct.size}, page= ${pageNumber} , sortField = ${sortField} , sortDir= ${sortDir})}"
+                        th:text="${pageNumber}" th:class="${pageNumber==listproduct.number +1} ? active"></a>
+                </span>
+            </th:block>
+        </div>
 
         <!-- Footer -->
         <th:block th:insert="~{common/footer}"></th:block>
