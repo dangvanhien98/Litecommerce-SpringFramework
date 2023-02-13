@@ -1,5 +1,6 @@
 package com.litecommerce.model;
 
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,15 +30,21 @@ import lombok.NoArgsConstructor;
 public class OrderModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "OrderID", columnDefinition = "int")
-	private int orderID;
+	private Integer orderID;
 
 	@Column(name = "SaleDate", columnDefinition = "date")
 	private Date saleDate;
-
-	@Column(name = "Price", columnDefinition = "float")
-	private float price;
+	
+	@Column(name = "SaleTime", columnDefinition = "time(0)")
+	private Time saleTime;
+	
+	@Column(name = "TotalPrice", columnDefinition = "float")
+	private float totalPrice;
+	
+	@Column(name = "Status", columnDefinition = "nvarchar(25)")
+	private String status;
 	
 	@ManyToOne
 	@JoinColumn(name = "EmployeeID")
@@ -49,5 +57,22 @@ public class OrderModel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Collection<OrderDetailModel> orderDetails;
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private Collection<CheckoutModel> checkouts;
+	
+	@Transient
+	private int customerID;
+	
+	public OrderModel(Date saleDate, Time saleTime, float totalPrice, String status, int customerID) {
+		super();
+		this.saleDate = saleDate;
+		this.saleTime = saleTime;
+		this.totalPrice = totalPrice;
+		this.status = status;
+		this.customerID = customerID;
+	}
+
+	
 
 }

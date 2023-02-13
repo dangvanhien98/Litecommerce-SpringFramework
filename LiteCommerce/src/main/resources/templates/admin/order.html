@@ -1,0 +1,63 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title>Colo Shop</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <th:block th:insert="~{common/taglib}"></th:block>
+    <th:block th:insert="~{common/scriptslib}"></th:block>
+
+</head>
+
+<body>
+
+    <div class="super_container">
+
+        <!-- -- header -- -->
+        <th:block th:insert="~{common/navigation}"></th:block>
+        <!-- -- header -- -->
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">CustomerName</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">TotalPrice</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" colspan="1">action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="lst : ${lstOrder}">
+                    <tr>
+
+                        <th scope="row">1</th>
+                        <td th:text="${lst.getCustomer().getCustomerName()}">..</td>
+                        <td th:text="${lst.getSaleDate()}"></td>
+                        <td th:text="${lst.getSaleTime()}"></td>
+                        <td th:text="${lst.getTotalPrice()}"></td>
+                        <td th:text="${lst.getStatus()}"></td>
+                        <!-- <td>
+                            <a th:href="@{/admin-employee/{action}/{id}(action ='delete', id=${lst.getEmployeeID()})}">Delete</a>
+                            <a th:href="@{/admin-employee/{action}/{id}(action ='update', id=${lst.getEmployeeID()})}">Update</a>
+                        </td> -->
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <th:block th:insert="~{common/footer}"></th:block>
+        <!-- Footer -->
+
+    </div>
+
+
+</body>
+
+</html>

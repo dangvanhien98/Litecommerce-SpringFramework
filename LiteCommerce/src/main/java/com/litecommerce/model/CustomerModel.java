@@ -41,7 +41,13 @@ public class CustomerModel {
 	@Column(name = "Address", columnDefinition = "nvarchar(50)")
 	private String address;
 	
+	@Column(name = "City", columnDefinition = "nvarchar(50)")
+	private String city;
+	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private Collection<OrderModel> orders;
+	
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private Collection<CheckoutModel> checkouts;
 	
 }

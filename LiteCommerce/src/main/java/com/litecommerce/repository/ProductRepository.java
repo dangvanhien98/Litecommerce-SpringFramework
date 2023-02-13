@@ -41,4 +41,6 @@ public interface ProductRepository extends CrudRepository<ProductModel, Integer>
 	
 	@Query(value = "select p from ProductModel p")
 	Page<ProductModel> findAllPage(Pageable pageable);
+	
+	Page<ProductModel> findByProductNameContaining(String productName, Pageable pageable);
 }

@@ -1,13 +1,10 @@
 package com.litecommerce.service;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.litecommerce.model.ProductModel;
@@ -58,24 +55,11 @@ public class ProductService {
 		return prRepository.getProductsByName(name);
 	}
 	
-
-	
 	public Page<ProductModel> findPaginated(org.springframework.data.domain.Pageable pageable){
 		return prRepository.findAllPage(pageable);
-//		List<ProductModel> products = prRepository.findAll();
-//		 
-//		int pageSize = pageable.getPageSize();
-//		int currentPage = pageable.getPageNumber();
-//		int startItem = pageSize * currentPage;
-//		List<ProductModel> list;
-//		if(products.size() < 0) {
-//			list = Collections.emptyList();
-//		}
-//		else {
-//			int toIndex = Math.min(startItem + pageSize, products.size());
-//			list = products.subList(startItem, toIndex);
-//		}
-//		Page<ProductModel> productPage = new PageImpl<ProductModel>(list, PageRequest.of(currentPage, pageSize), products.size());
-//		return productPage;
+	}
+	
+	public Page<ProductModel> findByProductNameContaining(String productName, Pageable pageable){
+		return prRepository.findByProductNameContaining(productName, pageable);
 	}
 }

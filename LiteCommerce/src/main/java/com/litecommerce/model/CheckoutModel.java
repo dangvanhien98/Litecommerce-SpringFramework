@@ -1,5 +1,8 @@
 package com.litecommerce.model;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,34 +18,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Table(name = "OrderDetail")
-@Entity(name = "OrderDetailModel")
+@Table(name = "Checkouts")
+@Entity(name = "CheckoutModel")
 @Data
 @Accessors(chain = true)
-@AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailModel{
-
+@AllArgsConstructor
+public class CheckoutModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "OrderDetailID", columnDefinition = "int")
-	private int orderDetailID;
+	@Column(name = "CheckoutID", columnDefinition = "int")
+	private int checkoutID;
 	
 	@ManyToOne
-	@JoinColumn(name = "ProductID")
-	private ProductModel product;
-    
+	@JoinColumn(name = "CustomerID")
+	private CustomerModel customer;
+	
 	@ManyToOne
 	@JoinColumn(name = "OrderID")
 	private OrderModel order;
-
-	@Column(name = "Quantity", columnDefinition = "int")
-	private int quantity;
+	
+	private String address;
+	private String city;
+	private Time time;
+	private Date date;
+	private String payment;
 	
 	@Transient
-	private int productID;
+	private int customerID;
 	
 	@Transient
 	private int orderID;
-	
 }
