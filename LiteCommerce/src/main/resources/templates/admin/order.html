@@ -23,34 +23,49 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">STT</th>
+                    <th scope="col">ID</th>
                     <th scope="col">CustomerName</th>
-                    <th scope="col">Date</th>
+                    <th scope="col"><a th:href="@{admin-Order(status = ${status}, size = ${pageSize}, page = ${currentPage}, sortField = 'sale_date', sortDir=${reverseSortDir} )}">Date</a></th>
                     <th scope="col">Time</th>
-                    <th scope="col">TotalPrice</th>
+                    <th scope="col"><a th:href="@{admin-Order(status = ${status}, size = ${pageSize}, page = ${currentPage}, sortField = 'total_price', sortDir=${reverseSortDir} )}">TotalPrice</a></th>
                     <th scope="col">Status</th>
-                    <th scope="col" colspan="1">action</th>
+                    <th scope="col" colspan="1" th:if="${status}">action</th>
                 </tr>
             </thead>
             <tbody>
                 <th:block th:each="lst : ${lstOrder}">
                     <tr>
 
-                        <th scope="row">1</th>
+                        <th scope="row" th:text="${lst.getOrderID()}"></th>
                         <td th:text="${lst.getCustomer().getCustomerName()}">..</td>
                         <td th:text="${lst.getSaleDate()}"></td>
                         <td th:text="${lst.getSaleTime()}"></td>
                         <td th:text="${lst.getTotalPrice()}"></td>
                         <td th:text="${lst.getStatus()}"></td>
-                        <!-- <td>
-                            <a th:href="@{/admin-employee/{action}/{id}(action ='delete', id=${lst.getEmployeeID()})}">Delete</a>
-                            <a th:href="@{/admin-employee/{action}/{id}(action ='update', id=${lst.getEmployeeID()})}">Update</a>
-                        </td> -->
+                        <td th:if="${status}">
+                            <a th:if="${status}=='queue'"
+                                th:href="@{/admin-Order/{action}?id={id}(action = 'accept', id=${lst.getOrderID()} )}">Accept</a>
+                            <a
+                                th:href="@{/admin-Order/{action}?id={id}(action= 'cancel', id=${lst.getOrderID()} )}">Cancel</a>
+                        </td>
                     </tr>
                 </th:block>
             </tbody>
         </table>
-
+        <div th:if="${pageNumbers}" class="pagination d-flex justify-content-center">
+            <!-- <th:block th:if="!${status}" th:each="pageNumber : ${pageNumbers}">
+                <span style="width: 30px; border: gray solid 1px;; text-align: center;"> <a
+                        th:href="@{admin-Order(size = ${lstOrder.size}, page = ${pageNumber}, sortField = ${sortField}, sortDir=${sortDir})}"
+                        th:text="${pageNumber}"></a>
+                </span>
+            </th:block> -->
+            <th:block th:if="${status}" th:each="pageNumber : ${pageNumbers}">
+                <span style="width: 30px; border: gray solid 1px;; text-align: center;"> <a
+                        th:href="@{admin-Order(status = ${status}, size = ${lstOrder.size}, page = ${pageNumber})}"
+                        th:text="${pageNumber}"></a>
+                </span>
+            </th:block>
+        </div>
         <!-- Footer -->
         <th:block th:insert="~{common/footer}"></th:block>
         <!-- Footer -->
