@@ -40,7 +40,7 @@
                         <td th:text="${lst.getBirthDate()}"></td>
                         <td th:text="${lst.getNumberPhone()}"></td>
                         <td th:text="${lst.getAddress()}">..</td>
-                        <td>
+                        <td th:if="!${lst.getAccount().getRole()==1}">
                             <a th:href="@{/admin-employee/{action}/{id}(action ='delete', id=${lst.getEmployeeID()})}">Delete</a>
                             <a th:href="@{/admin-employee/{action}/{id}(action ='update', id=${lst.getEmployeeID()})}">Update</a>
                         </td>

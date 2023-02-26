@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Sort;
 
+import com.litecommerce.model.AccountModel;
 import com.litecommerce.model.OrderModel;
 import com.litecommerce.service.OrderService;
 
@@ -31,8 +34,17 @@ public class OrderController {
 			@RequestParam(name = "page", defaultValue = "1") Integer currentPage,
 			@RequestParam(name = "size", defaultValue = "3") Integer pageSize,
 			@RequestParam(name = "sortField", defaultValue = "") String sortField,
-			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir) {
-
+			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
+			HttpSession session) {
+		
+		//check login
+		if(session.getAttribute("account") !=null){
+			AccountModel acc = (AccountModel)session.getAttribute("account");
+			model.addAttribute("acc", acc);
+		}
+		else
+			return "redirect:/admin";
+		
 		String status = null;
 
 		if (params != null) {
@@ -55,7 +67,7 @@ public class OrderController {
 			}
 		}
 
-		// list order
+		// list order pagination and sort by status
 		Pageable pageable = sortField.length() == 0 ? PageRequest.of(currentPage - 1, pageSize)
 				: PageRequest.of(currentPage - 1, pageSize,
 						sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
@@ -64,9 +76,6 @@ public class OrderController {
 			lstOrderPagination = orderService.getOrdersByStatus(pageable, status);
 			model.addAttribute("lstOrder", lstOrderPagination);
 			model.addAttribute("status", status);
-		} else {
-			lstOrderPagination = orderService.findAllOrderPage(pageable);
-			model.addAttribute("lstOrder", lstOrderPagination);
 		}
 
 		// list number page

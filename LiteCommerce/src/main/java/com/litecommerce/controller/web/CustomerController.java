@@ -27,7 +27,7 @@ public class CustomerController {
 	public String checkSignup(@ModelAttribute("customer") CustomerModel customer, @RequestParam String password1) {
 		if(customer.getPassWord().equals(password1) && customerService.findByPhone(customer.getNumberPhone()) == null ) {
 			customerService.save(customer);
-			return "redirect:/loginn";
+			return "redirect:/login";
 		}		
 		return "web/registerCustomer";
 	}

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.litecommerce.LiteCommerceApplication;
+import com.litecommerce.model.AccountModel;
 import com.litecommerce.model.ProductModel;
 import com.litecommerce.service.GroupProductService;
 import com.litecommerce.service.ProductService;
@@ -41,8 +44,17 @@ public class ProductController {
 			@RequestParam(name = "page", defaultValue = "1") Integer currentPage,
 			@RequestParam(name = "size", defaultValue = "5") Integer pageSize,
 			@RequestParam(name = "sortField", defaultValue = "") String sortField,
-			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir) 
+			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
+			@RequestParam(required = false) String keyName,
+			HttpSession session)
 	{
+		//check login
+		if(session.getAttribute("account") !=null){
+			AccountModel acc = (AccountModel)session.getAttribute("account");
+			model.addAttribute("acc", acc);
+		}
+		else
+			return "redirect:/admin";
 		if(action != null && action.equals("delete")) {
 			productService.deleteById(id);
 		}
@@ -53,6 +65,7 @@ public class ProductController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		
+		// list product pagination and sort
 		Pageable pageable = sortField.length() == 0 
 				? PageRequest.of(currentPage - 1, pageSize)
 				: PageRequest.of(currentPage - 1, pageSize, sortDir.equals("asc") ? Sort.by(sortField).ascending() :  Sort.by(sortField).descending());
@@ -72,7 +85,9 @@ public class ProductController {
 	
 	@RequestMapping(value = "/admin-searchproduct" , method = RequestMethod.POST)
 	public String PageSearch(Model model, @RequestParam(required = false) String keyName) {
-		model.addAttribute("listproduct", productService.getProductsByName(keyName));
+	//	model.addAttribute("listproduct", productService.getProductsByName(keyName));
+		Page<ProductModel> page = productService.findByProductNameContaining(keyName, PageRequest.of(1, 5));
+		System.out.println("search-----------"+page.getContent().get(0).getProductName());
 		return "admin/product";
 	}
 	

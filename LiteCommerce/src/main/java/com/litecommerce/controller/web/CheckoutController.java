@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.litecommerce.model.CheckoutModel;
 import com.litecommerce.model.CustomerModel;
 import com.litecommerce.model.OrderDetailModel;
 import com.litecommerce.model.OrderModel;
@@ -58,7 +57,6 @@ public class CheckoutController {
 		if(customer != null) {
 			OrderModel order = new OrderModel(dateOrder, timeOrder, lstcart.subTotal(), "queue",customer.getCustomerID());
 			orderService.insertOrder(order); // them vao order
-			System.out.println("date"+dateFormat.format(dateOrder));
 			int orderIDLast = orderService.getOrderIDLast(customer.getCustomerID(), dateFormat.format(dateOrder),timeOrder).getOrderID();
 			if(sizeCart > 0) {
 				for(int i=0; i< sizeCart; i++) {
@@ -68,6 +66,7 @@ public class CheckoutController {
 							.setOrderID(orderIDLast);
 					orderDetailService.insertOrderDetail(orderDetail); // them vao orderdetail
 					checkoutService.insertCheckout(customer.getAddress(), customer.getCity(), dateOrder, payment, timeOrder, customer.getCustomerID(), orderIDLast);
+					httpSession.removeAttribute("cart");
 				}
 			}
 		}

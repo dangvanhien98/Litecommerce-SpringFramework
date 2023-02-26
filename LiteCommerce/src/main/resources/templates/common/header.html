@@ -44,11 +44,12 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="account_selection">
-                                    <li><a th:href="@{/login}"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign
+                                    <li th:if="!${customer}"><a th:href="@{/login}"><i class="fa fa-sign-in"
+                                                aria-hidden="true"></i>Sign
                                             In</a></li>
-                                    <li><a th:href="@{/logoutt}"><i class="fa fa-sign-in" aria-hidden="true"></i>Logout
+                                    <li th:if="${customer}"><a th:href="@{/logout}"><i class="fa fa-sign-in" aria-hidden="true"></i>Logout
                                         </a></li>
-                                    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                    <li th:if="!${customer}"><a th:href="@{/signup}"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -73,13 +74,15 @@
                             <li><a th:href="@{/categories}">shop</a></li>
                             <li><a href="contact.html">contact</a></li>
                         </ul>
-                        <ul >
+                        <ul>
                             <li>
-                                <a href="#"><i class="fa fa-user" aria-hidden="true"
+                                <a href="#"><i class="fa fa-user" aria-hidden="true" th:if="${customer}"
                                         th:text="${customer.getCustomerName()}"></i></a>
-                                <ul>
-                                    <a th:href="@{/logoutt}"><li>LogOut</li></a>
-                                </ul>
+                                <!-- <ul>
+                                    <a th:href="@{/logout}">
+                                        <li>LogOut</li>
+                                    </a>
+                                </ul> -->
                             </li>
                         </ul>
                         <ul class="navbar_user">

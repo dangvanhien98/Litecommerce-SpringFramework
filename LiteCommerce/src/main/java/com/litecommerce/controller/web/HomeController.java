@@ -1,5 +1,7 @@
 package com.litecommerce.controller.web;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.litecommerce.model.CartModel;
 import com.litecommerce.model.CustomerModel;
+import com.litecommerce.model.GroupProductModel;
 import com.litecommerce.service.CartService;
 import com.litecommerce.service.CustomerService;
 import com.litecommerce.service.GroupProductService;
@@ -35,7 +38,7 @@ public class HomeController {
 
 	CartService cartService = new CartService();
 
-	@RequestMapping(value = "/loginn", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 //		WebSecurityConfig web = new WebSecurityConfig();
 //		System.out.println(web.userDetailsService(new BCryptPasswordEncoder()).loadUserByUsername("admin@gmail.com"));
@@ -55,13 +58,13 @@ public class HomeController {
 	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
 	public String loginSuccess(@RequestParam(required = false) String numberPhone,
 			@RequestParam(required = false) String password, HttpSession httpSession, Model model,
-			@CookieValue(value = "user", defaultValue = "") String userCookie,
-			HttpServletResponse response, HttpServletRequest request) {
+			@CookieValue(value = "user", defaultValue = "") String userCookie, HttpServletResponse response,
+			HttpServletRequest request) {
 		if (customerService.findByPhoneAndPass(numberPhone, password) != null) {
 			userCookie = customerService.findByPhoneAndPass(numberPhone, password).getEmail();
 			Cookie cookie = new Cookie("user", userCookie);
-			cookie.setMaxAge(24*60*60);
-			
+			cookie.setMaxAge(24 * 60 * 60);
+
 			response.addCookie(cookie);
 			if (httpSession.getAttribute("customterLogin") == null) {
 				httpSession.setAttribute("customterLogin", customerService.findByPhoneAndPass(numberPhone, password));
@@ -70,10 +73,10 @@ public class HomeController {
 			// (CustomerModel)httpSession.getAttribute("customterLogin");
 			return "redirect:/";
 		}
-		return "redirect:/loginn";
+		return "redirect:/login";
 	}
 
-	@RequestMapping(value = "/logoutt")
+	@RequestMapping(value = "/logout")
 	public String Logout(HttpSession httpSession) {
 
 		CartService cart = (CartService) httpSession.getAttribute("cart");
@@ -88,7 +91,7 @@ public class HomeController {
 
 		httpSession.removeAttribute("customterLogin");
 		httpSession.removeAttribute("cart");
-		return "redirect:/loginn";
+		return "redirect:/login";
 	}
 
 	@ResponseBody
@@ -109,14 +112,24 @@ public class HomeController {
 			HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		System.out.println(cookies);
-		for(Cookie c : cookies) {
-			if(c.getName().equals("user"))
-				System.out.println("value cook"+c.getValue());
+		for (Cookie c : cookies) {
+			if (c.getName().equals("user"))
+				System.out.println("value cook" + c.getValue());
 		}
-		if (httpSession.getAttribute("customterLogin") == null)
-			return "redirect:/logoutt";
-		model.addAttribute("grproduct", grProductService.findAll().subList(1, grProductService.findAll().size()));
-		model.addAttribute("grproduct0", grProductService.findAll());
+
+//		if (httpSession.getAttribute("customterLogin") == null)
+//			return "redirect:/logout";
+		if (httpSession.getAttribute("customterLogin") != null) {
+			CustomerModel cus = (CustomerModel) httpSession.getAttribute("customterLogin");
+			model.addAttribute("customer", cus);
+		}
+
+		List<GroupProductModel> lstGrp = grProductService.findAll();
+		if (lstGrp.size() > 0) {
+			model.addAttribute("grproduct", lstGrp.subList(1, lstGrp.size()));
+			model.addAttribute("grproduct0", lstGrp);
+		}
+
 		if (id != null && id != 0)
 			model.addAttribute("product", productService.getNewArrivalsProductByGroupId(id));
 		else
@@ -126,9 +139,6 @@ public class HomeController {
 
 		if (lstcart != null)
 			model.addAttribute("lstCart", lstcart.carts);
-
-		CustomerModel cus = (CustomerModel) httpSession.getAttribute("customterLogin");
-		model.addAttribute("customer", cus);
 
 		return "web/index";
 	}
