@@ -42,7 +42,7 @@ public class ProductController {
 	@RequestMapping(value = { "/admin-product", "/admin-product/{action}/{id}"}, method = RequestMethod.GET)
 	public String productPage(Model model,@PathVariable(required = false) String action, @PathVariable(required = false) Integer id,
 			@RequestParam(name = "page", defaultValue = "1") Integer currentPage,
-			@RequestParam(name = "size", defaultValue = "5") Integer pageSize,
+			@RequestParam(name = "size", defaultValue = "2") Integer pageSize,
 			@RequestParam(name = "sortField", defaultValue = "") String sortField,
 			@RequestParam(name = "sortDir", defaultValue = "asc") String sortDir,
 			@RequestParam(required = false) String keyName,
@@ -64,7 +64,7 @@ public class ProductController {
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
-		
+		model.addAttribute("baseUrl", "/admin-product");
 		// list product pagination and sort
 		Pageable pageable = sortField.length() == 0 
 				? PageRequest.of(currentPage - 1, pageSize)
@@ -74,12 +74,24 @@ public class ProductController {
 		model.addAttribute("listproduct", productPage);
 		
 		int totalPages = productPage.getTotalPages();
+		model.addAttribute("totalPages", totalPages);
 		if(totalPages > 0 ) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-			model.addAttribute("pageNumbers", pageNumbers);
+			if(pageNumbers.size()>5) {
+				int begin = currentPage;
+				int end =begin + 4;
+				if(end >= totalPages) {
+					begin = totalPages - 4;
+					end = totalPages;
+				}
+					
+				List<Integer> pageNumbersNew = pageNumbers.subList(begin-1, end);
+				model.addAttribute("pageNumbers", pageNumbersNew);
+			}
+			else
+				model.addAttribute("pageNumbers", pageNumbers);
 		}
 		
-	//	model.addAttribute("listproduct", productService.getAllProduct());
 		return "admin/product";
 	}
 	

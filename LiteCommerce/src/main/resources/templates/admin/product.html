@@ -51,22 +51,28 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col"><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'productName' , sortDir=${reverseSortDir})}" >Product_Name</a></th>
+                    <th scope="col"><a
+                            th:href="@{${baseUrl}(page= ${currentPage} , sortField = 'productName' , sortDir=${reverseSortDir})}">Product_Name</a>
+                    </th>
                     <th scope="col">image</th>
-                    <th scope="col" ><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'price' , sortDir=${reverseSortDir})}" >Price</a></th>
+                    <th scope="col"><a
+                            th:href="@{${baseUrl}(page= ${currentPage} , sortField = 'price' , sortDir=${reverseSortDir})}">Price</a>
+                    </th>
                     <th scope="col">price_old</th>
                     <th scope="col">quantity</th>
                     <th scope="col">discount</th>
-                    <th scope="col"><a th:href="@{/admin-product(size= ${listproduct.size}, page= ${currentPage} , sortField = 'entryDate' , sortDir=${reverseSortDir})}" >entryDate</a></th>
+                    <th scope="col"><a
+                            th:href="@{${baseUrl}(page= ${currentPage} , sortField = 'entryDate' , sortDir=${reverseSortDir})}">entryDate</a>
+                    </th>
                     <th scope="col">GPName</th>
                     <th scope="col" colspan="1">action</th>
                 </tr>
             </thead>
             <tbody>
-                <th:block th:each="lst : ${listproduct}">
+                <th:block th:each="lst, iterStat : ${listproduct}">
                     <tr>
 
-                        <th scope="row"></th>
+                        <th scope="row" th:text="${iterStat.count}"></th>
                         <td th:text="${lst.getProductName()}">..</td>
                         <td><img th:src="${lst.getImage()}" style="width: 70px;"></td>
                         <td th:text="${lst.getPrice()}"></td>
@@ -83,13 +89,33 @@
                 </th:block>
             </tbody>
         </table>
-        <div th:if="${listproduct.totalPages > 0}" class="pagination d-flex justify-content-center">
-            <th:block th:each="pageNumber : ${pageNumbers}">
-                <span style="width: 30px; border: gray solid 1px;; text-align: center;"> <a th:href="@{/admin-product(size= ${listproduct.size}, page= ${pageNumber} , sortField = ${sortField} , sortDir= ${sortDir})}"
-                        th:text="${pageNumber}" th:class="${pageNumber==listproduct.number +1} ? active"></a>
-                </span>
-            </th:block>
-        </div>
+        <ul class="pagination">
+            <li th:class="${currentPage}==1 ? 'page-item disabled' : 'page-item'">
+                <a class="page-link"
+                    th:href="@{${baseUrl}(page = 1, sortField = ${sortField}, sortDir=${sortDir})}">First</a>
+            </li>
+            <li th:class="${currentPage}==1 ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" aria-label="Previous"
+                    th:href="@{${baseUrl}(page = ${currentPage}-1, sortField = ${sortField}, sortDir=${sortDir})}"
+                    title="go to previous page"><span aria-hidden="true">&laquo;</span><span
+                        class="sr-only">Previous</span></a>
+            </li>
+            <li th:each="pageNumber, iterStat : ${pageNumbers}"
+                th:class="${iterStat.current} == ${currentPage} ? 'page-item active' : 'page-item'">
+                <a class="page-link"
+                    th:href="@{${baseUrl}(page = ${pageNumber}, sortField = ${sortField}, sortDir=${sortDir})}"
+                    th:text='${pageNumber}'>1</a>
+            </li>
+            <li th:class="${currentPage}== ${totalPages}? 'page-item disabled' : 'page-item'">
+                <a class="page-link" aria-label="Next"
+                    th:href="@{${baseUrl}(page = ${currentPage}+1, sortField = ${sortField}, sortDir=${sortDir})}"
+                    title="go to next page"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a>
+            </li>
+            <li th:class="${currentPage}==${totalPages} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link"
+                    th:href="@{${baseUrl}(page = ${totalPages}, sortField = ${sortField}, sortDir=${sortDir})}">Last</a>
+            </li>
+        </ul>
 
         <!-- Footer -->
         <th:block th:insert="~{common/footer}"></th:block>

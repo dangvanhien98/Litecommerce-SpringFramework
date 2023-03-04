@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,11 +66,11 @@ public class ProductModel{
 	@Column(name = "Note", columnDefinition = "nvarchar(50)")
 	private String note;
 	
-	@ManyToOne // có nhiều sản phẩm ở nhóm sản phẩm...n-1
+	@JsonIgnore
+	@ManyToOne// có nhiều sản phẩm ở nhóm sản phẩm...n-1
 	@JoinColumn(name = "GroupProductID") // thông qua khóa ngoại GroupProductID
 	private GroupProductModel groupProduct;
 	
-//	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Collection<OrderDetailModel> orderDetails;
 }
