@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,6 +44,7 @@ public class EmployeeModel {
 	private String address;
 	
 	@Column(name = "BirthDate", columnDefinition = "date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthDate;
 	
 	@JsonIgnore
@@ -48,6 +52,17 @@ public class EmployeeModel {
 	private Collection<OrderModel> orders;	
 	
 	@OneToOne
-	@JoinColumn(name = "AccountID", nullable = false)
+	@JoinColumn(name = "AccountID", nullable = true)
 	private AccountModel account;
+	
+	@Transient
+	private int accountID;
+	
+	public EmployeeModel( String address, Date birthDate, String employeeName, String numberPhone, int accountID) {
+		this.address = address;
+		this.birthDate = birthDate;
+		this.employeeName = employeeName;
+		this.numberPhone = numberPhone;
+		this.accountID = accountID;
+	}
 }

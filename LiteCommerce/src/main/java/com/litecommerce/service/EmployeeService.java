@@ -20,4 +20,8 @@ public class EmployeeService {
 	public void deleteById(Integer id) {
 		employeeRepository.deleteById(id);
 	}
+	
+	public void saveEmployee(EmployeeModel em) {
+		employeeRepository.insertEmployee( em.getAddress(), em.getBirthDate(), em.getEmployeeName(), em.getNumberPhone(), em.getAccountID());
+	}
 }
