@@ -26,13 +26,13 @@ import com.litecommerce.service.OrderService;
 public class CheckoutController {
 	@Autowired
 	OrderService orderService;
-	
+
 	@Autowired
 	OrderDetailService orderDetailService;
-	
+
 	@Autowired
 	CheckoutService checkoutService;
-	
+
 	@RequestMapping(value = "/checkout")
 	public String checkout(HttpSession httpSession, Model model) {
 		CartService lstcart = (CartService) httpSession.getAttribute("cart");
@@ -40,32 +40,37 @@ public class CheckoutController {
 			model.addAttribute("lstCart", lstcart.carts);
 			model.addAttribute("subTotal", lstcart.subTotal());
 		}
-		CustomerModel cus = (CustomerModel)httpSession.getAttribute("customterLogin");
+		CustomerModel cus = (CustomerModel) httpSession.getAttribute("customterLogin");
 		model.addAttribute("customer", cus);
-		if(httpSession.getAttribute("customterLogin") == null)
+		if (httpSession.getAttribute("customterLogin") == null)
 			return "web/login";
 		return "web/checkout";
 	}
-	
+
 	@RequestMapping(value = "/checkout/buy", method = RequestMethod.POST)
-	public String buy(HttpSession httpSession, @RequestParam(name = "payment") String payment, @ModelAttribute(name = "customer") CustomerModel customer) {
+	public String buy(HttpSession httpSession, @RequestParam(name = "payment") String payment,
+			@ModelAttribute(name = "customer") CustomerModel customer) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date dateOrder = new java.util.Date();
 		Time timeOrder = new Time(dateOrder.getTime());
 		CartService lstcart = (CartService) httpSession.getAttribute("cart");
 		int sizeCart = lstcart.carts.size();
-		if(customer != null) {
-			OrderModel order = new OrderModel(dateOrder, timeOrder, lstcart.subTotal(), "queue",customer.getCustomerID());
+		if (customer != null) {
+			String timeStr = timeOrder.toString();
+			OrderModel order = new OrderModel(dateOrder, timeStr, lstcart.subTotal(), "queue",
+					customer.getCustomerID());
 			orderService.insertOrder(order); // them vao order
-			int orderIDLast = orderService.getOrderIDLast(customer.getCustomerID(), dateFormat.format(dateOrder),timeOrder).getOrderID();
-			if(sizeCart > 0) {
-				for(int i=0; i< sizeCart; i++) {
+			OrderModel getOrderIDLast = orderService.getOrderIDLast(customer.getCustomerID(),
+					dateFormat.format(dateOrder), timeStr);
+			int orderIDLast = getOrderIDLast.getOrderID();
+			if (sizeCart > 0) {
+				for (int i = 0; i < sizeCart; i++) {
 					var orderDetail = new OrderDetailModel()
 							.setProductID(lstcart.carts.get(i).getProduct().getProductID())
-							.setQuantity(lstcart.carts.get(i).getQuantity())
-							.setOrderID(orderIDLast);
+							.setQuantity(lstcart.carts.get(i).getQuantity()).setOrderID(orderIDLast);
 					orderDetailService.insertOrderDetail(orderDetail); // them vao orderdetail
-					checkoutService.insertCheckout(customer.getAddress(), customer.getCity(), dateOrder, payment, timeOrder, customer.getCustomerID(), orderIDLast);
+					checkoutService.insertCheckout(customer.getAddress(), customer.getCity(), dateOrder, payment,
+							timeOrder, customer.getCustomerID(), orderIDLast);
 					httpSession.removeAttribute("cart");
 				}
 			}

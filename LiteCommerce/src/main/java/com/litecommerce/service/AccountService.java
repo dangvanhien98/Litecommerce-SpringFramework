@@ -15,4 +15,12 @@ public class AccountService {
 	public AccountModel findByUsernameAndPass(String username, String password) {
 		return accountRepository.findByUsernameAndPass(username, password);
 	}
+	
+	public void saveAccount(AccountModel acc) {
+		accountRepository.save(acc);
+	}
+	
+	public AccountModel findAccountByUser(String user) {
+		return accountRepository.findAccountByUser(user);
+	}
 }

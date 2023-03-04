@@ -47,19 +47,18 @@
 						</div>
 					</div>
 				</div>
-				<div class="row align-items-center">
-					<div class="col text-center">
-						<div class="new_arrivals_sorting">
-							<ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-								<th:block th:each="prd : ${grproduct0}">
-									<a class="d-flex flex-column justify-content-center align-items-center active is-checked"
-										th:href="@{/arrivals/{id}(id=${prd.getGroupProductID()})}"
-										th:text="${prd.getGroupProductName()}"></a>
-								</th:block>
-							</ul>
-						</div>
-					</div>
+
+				<div class="row justify-content-center pt-5">
+					<th:block th:each="prd : ${grproduct0}">
+						<ul class="nav nav-pills">
+							<li class="nav-item">
+								<a th:class="${prd.getGroupProductID()} == ${grActice} ? 'nav-link active' : 'nav-link'" th:href="@{/arrivals/{id}(id=${prd.getGroupProductID()})}"
+									th:text="${prd.getGroupProductName()}"></a>
+							</li>
+						</ul>
+					</th:block>
 				</div>
+
 				<div class="row">
 					<div class="col">
 						<div class="product-grid"

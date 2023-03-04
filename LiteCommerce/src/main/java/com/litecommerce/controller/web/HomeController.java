@@ -119,26 +119,29 @@ public class HomeController {
 
 //		if (httpSession.getAttribute("customterLogin") == null)
 //			return "redirect:/logout";
-		if (httpSession.getAttribute("customterLogin") != null) {
-			CustomerModel cus = (CustomerModel) httpSession.getAttribute("customterLogin");
+		CustomerModel cus = (CustomerModel) httpSession.getAttribute("customterLogin");
+
+		CartService lstcart = (CartService) httpSession.getAttribute("cart");
+		if (cus != null) {
 			model.addAttribute("customer", cus);
 		}
 
+		if (lstcart != null) {
+			model.addAttribute("lstCart", lstcart.carts);
+		}
 		List<GroupProductModel> lstGrp = grProductService.findAll();
 		if (lstGrp.size() > 0) {
 			model.addAttribute("grproduct", lstGrp.subList(1, lstGrp.size()));
 			model.addAttribute("grproduct0", lstGrp);
 		}
 
-		if (id != null && id != 0)
+		if (id == null)
+			id = 0;
+		model.addAttribute("grActice", id);
+		if (id != 0) {
 			model.addAttribute("product", productService.getNewArrivalsProductByGroupId(id));
-		else
+		} else
 			model.addAttribute("product", productService.getNewArrivalsProduct());
-
-		CartService lstcart = (CartService) httpSession.getAttribute("cart");
-
-		if (lstcart != null)
-			model.addAttribute("lstCart", lstcart.carts);
 
 		return "web/index";
 	}

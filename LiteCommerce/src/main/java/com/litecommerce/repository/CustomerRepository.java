@@ -7,8 +7,6 @@ import com.litecommerce.model.CustomerModel;
 
 public interface CustomerRepository extends CrudRepository<CustomerModel, Integer> {
 	
-	CustomerModel save(CustomerModel customer);
-	
 	@Query(value = "select * from customers c where c.number_phone = ?1", nativeQuery = true)
 	CustomerModel findByPhone(String number_phone);
 	
