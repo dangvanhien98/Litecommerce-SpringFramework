@@ -55,7 +55,8 @@ public class OrderController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("pageSize", pageSize);
-
+		String baseUrl = "/admin-Order";
+		model.addAttribute("baseUrl", baseUrl);
 		// action accept and cancel order
 		if (action != null) {
 			if (action.equals("accept")) {
@@ -66,7 +67,6 @@ public class OrderController {
 				orderService.updateOrder("err", id);
 			}
 		}
-
 		// list order pagination and sort by status
 		Pageable pageable = sortField.length() == 0 ? PageRequest.of(currentPage - 1, pageSize)
 				: PageRequest.of(currentPage - 1, pageSize,
@@ -80,9 +80,23 @@ public class OrderController {
 
 		// list number page
 		int totalPages = lstOrderPagination.getTotalPages();
+		model.addAttribute("totalPages", totalPages);
 		if (totalPages > 0) {
-			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-			model.addAttribute("pageNumbers", pageNumbers);
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());		
+			if(pageNumbers.size()>5) {
+				int begin = currentPage;
+				int end =begin + 4;
+				if(end >= totalPages) {
+					begin = totalPages - 4;
+					end = totalPages;
+				}
+					
+				List<Integer> pageNumbersNew = pageNumbers.subList(begin-1, end);
+				model.addAttribute("pageNumbers", pageNumbersNew);
+			}
+			else
+				model.addAttribute("pageNumbers", pageNumbers);
+			
 		}
 		return "admin/order";
 	}

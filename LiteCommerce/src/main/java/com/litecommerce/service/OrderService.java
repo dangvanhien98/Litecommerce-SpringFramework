@@ -1,9 +1,5 @@
 package com.litecommerce.service;
 
-import java.awt.print.Pageable;
-import java.sql.Time;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -21,7 +17,7 @@ public class OrderService {
 		orderRepository.insertOrder(order.getSaleDate(), order.getSaleTime(), order.getStatus(), order.getTotalPrice(), order.getCustomerID());
 	}
 	
-	public OrderModel getOrderIDLast(int customerId, String date, Time time) {
+	public OrderModel getOrderIDLast(int customerId, String date, String time) {
 		return orderRepository.getOrderID(customerId, date, time);
 	}
 	

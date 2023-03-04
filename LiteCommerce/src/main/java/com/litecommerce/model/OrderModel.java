@@ -1,6 +1,5 @@
 package com.litecommerce.model;
 
-import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 
@@ -37,8 +36,8 @@ public class OrderModel {
 	@Column(name = "SaleDate", columnDefinition = "date")
 	private Date saleDate;
 	
-	@Column(name = "SaleTime", columnDefinition = "time(0)")
-	private Time saleTime;
+	@Column(name = "SaleTime", columnDefinition = "nvarchar(25)")
+	private String saleTime;
 	
 	@Column(name = "TotalPrice", columnDefinition = "float")
 	private float totalPrice;
@@ -64,7 +63,7 @@ public class OrderModel {
 	@Transient
 	private int customerID;
 	
-	public OrderModel(Date saleDate, Time saleTime, float totalPrice, String status, int customerID) {
+	public OrderModel(Date saleDate, String saleTime, float totalPrice, String status, int customerID) {
 		super();
 		this.saleDate = saleDate;
 		this.saleTime = saleTime;
