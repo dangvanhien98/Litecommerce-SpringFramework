@@ -44,7 +44,7 @@
                         <td th:text="${lst.getAddress()}">..</td>
                         <td th:if="!${lst.getAccount().getRole()==1}">
                             <a th:href="@{/admin-employee/{action}/{id}(action ='delete', id=${lst.getEmployeeID()})}">Delete</a>
-                            <a th:href="@{/admin-employee/{action}/{id}(action ='update', id=${lst.getEmployeeID()})}">Update</a>
+                            <a th:href="@{/admin-updateEmployee/{id}(id=${lst.getEmployeeID()})}">Update</a>
                         </td>
                     </tr>
                 </th:block>

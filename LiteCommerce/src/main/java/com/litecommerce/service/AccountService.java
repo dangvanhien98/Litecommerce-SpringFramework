@@ -23,4 +23,8 @@ public class AccountService {
 	public AccountModel findAccountByUser(String user) {
 		return accountRepository.findAccountByUser(user);
 	}
+	
+	public void updatePass(String pass, int id) {
+		accountRepository.updatePass(pass, id);
+	}
 }

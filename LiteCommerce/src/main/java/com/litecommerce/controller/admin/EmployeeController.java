@@ -1,5 +1,8 @@
 package com.litecommerce.controller.admin;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +27,7 @@ import com.litecommerce.service.EmployeeService;
 public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
-	
+
 	@Autowired
 	AccountService accountService;
 
@@ -38,37 +41,50 @@ public class EmployeeController {
 		}
 
 		if (action != null && action.equals("delete")) {
-			System.out.println(id);
 			employeeService.deleteById(id);
 		}
 		model.addAttribute("listEmployee", employeeService.getAllEmployee());
-		System.out.println(employeeService.getAllEmployee().get(0).getAccount().getRole());
 		return "admin/employee";
 	}
 
-	@GetMapping(value = { "/admin-addEmployee" })
-	public String formEmployee(Model model) {
-		model.addAttribute("employee", new EmployeeModel());
+	@GetMapping(value = { "/admin-addEmployee", "/admin-updateEmployee/{id}" })
+	public String formEmployee(Model model, @PathVariable(required = false) Integer id) {
+		if(id != null)
+			model.addAttribute("isUpdate", "isupdate");
+		model.addAttribute("employee", id == null ? new EmployeeModel() : employeeService.getEmployeeById(id));
 		return "admin/actionEmployee";
 	}
 
-	@PostMapping(value = "/admin-saveEmployee")
+	@PostMapping(value = { "/admin-saveEmployee" })
 	public String saveEmployee(@RequestParam Map<String, String> params,
 			@ModelAttribute(name = "employee") EmployeeModel employeeModel) {
 		String user = params.get("userName");
 		String pass = params.get("passWord");
 		String pass1 = params.get("passWord1");
-		if(pass.equals(pass1)) {
-			if(accountService.findAccountByUser(user) == null) {
-				AccountModel acc = new AccountModel(0, user, pass, 2);
-				accountService.saveAccount(acc);
-				int idLastAccount = accountService.findAccountByUser(user).getAccountId();
-				EmployeeModel em = new EmployeeModel(employeeModel.getAddress(), employeeModel.getBirthDate(), employeeModel.getEmployeeName(), employeeModel.getNumberPhone(), idLastAccount);
-				employeeService.saveEmployee(em);
+		Integer accountid = (Integer.valueOf(params.get("account.accountId")));
+		if (accountid == null) {
+			if (pass.equals(pass1)) {
+				if (accountService.findAccountByUser(user) == null) {
+					AccountModel acc = new AccountModel(0, user, pass, 2);
+					accountService.saveAccount(acc);
+					int idLastAccount = accountService.findAccountByUser(user).getAccountId();
+					EmployeeModel em = new EmployeeModel(employeeModel.getAddress(), employeeModel.getBirthDate(),
+							employeeModel.getEmployeeName(), employeeModel.getNumberPhone(), idLastAccount);
+					employeeService.saveEmployee(em);
+				}
 			}
-				
+		} else {
+			String passUpdate = params.get("account.password");
+			String employeeName = params.get("employeeName");
+			String numberPhone = params.get("numberPhone");
+			String address = params.get("address");
+			String birthDate = params.get("birthDate");
+			accountService.updatePass(passUpdate, accountid);
+			EmployeeModel em = new EmployeeModel(address, java.sql.Date.valueOf(birthDate), employeeName, numberPhone,
+					accountid);
+			employeeService.updateEmployee(em);
 		}
-			
+
 		return "redirect:/admin-employee";
 	}
 }

@@ -9,18 +9,21 @@
 </head>
 
 <div class="col-6 container my-3 card p-3">
-    <h1 class="text-center mb-3">add Employee</h1>
+    <h1 class="text-center mb-3" th:text="${isUpdate} ? 'update Employee' : 'add Employee'"></h1>
     <form th:action="@{/admin-saveEmployee}" method="post" th:object="${employee}">
+        <input th:if="${isUpdate}" type="hidden" name="accountid" th:field="*{account.accountId}">
+        <input type="hidden" name="accountid" th:field="*{account.username}">
         <div class="input-group mb-3">
-            <input type="email" class="form-control" name="userName" placeholder="example: staff@gmail.com" required>
+            <input th:if="!${isUpdate}" type="email" class="form-control" name="userName" th:field="*{account.username}" placeholder="example: staff@gmail.com" required>
+            <input th:if="${isUpdate}" type="email" class="form-control" name="userName" th:field="*{account.username}" placeholder="example: staff@gmail.com" disabled>
             <label class="input-group-text">Username</label>
         </div>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="passWord" placeholder="Enter pass word" required>
+            <input type="text" class="form-control" name="passWord" th:field="*{account.password}" placeholder="Enter pass word" required>
             <label class="input-group-text">passWord</label>
         </div>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="passWord1" placeholder="Enter pass word again" required>
+        <div class="input-group mb-3" th:if="!${isUpdate}">
+            <input type="text" class="form-control" name="passWord1" th:field="*{account.password}" placeholder="Enter pass word again" required>
             <label class="input-group-text">passWord Again</label>
         </div>
         <div class="input-group mb-3">
