@@ -9,7 +9,7 @@
 </head>
 
 <div class="col-6 container my-3 card p-3">
-    <h1 class="text-center mb-3">add product</h1>
+    <h1 class="text-center mb-3" th:text = "${isUpdate} ? 'update product' : 'add product'"></h1>
     <form th:action="@{/admin-saveProduct}" method="post" th:object="${product}" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <input type="hidden" th:field="*{productID}">

@@ -105,6 +105,8 @@ public class ProductController {
 	
 	@RequestMapping(value = {"/admin-addProduct", "/admin-updateProduct/{id}"}, method = RequestMethod.GET)
 	public String showAddProduct(Model model, @PathVariable(required = false) Integer id) {
+		if(id != null)
+			model.addAttribute("isUpdate", "isUpdate");
 		model.addAttribute("lstGrp", groupProductService.findAll());
 		model.addAttribute("product", id==null ? new ProductModel() : productService.findById(id));
 		return "admin/actionProduct";
